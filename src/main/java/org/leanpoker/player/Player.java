@@ -12,12 +12,23 @@ public class Player {
         Gson gson = new Gson();
         gson.fromJson(request, GameState.class);
 
-        return 100;
-        // return allIn();
+        return allIn();
     }
 
-    public static int allIn() {
-        return 1000;
+    private static int checkOrFold() {
+        return 0;
+    }
+
+    private static int call(GameState state) {
+        return state.getCurrentBuyIn() - state.getPlayers().get(state.getInAction()).getBet();
+    }
+
+    private static int raise(GameState state) {
+        return state.getCurrentBuyIn() - state.getPlayers().get(state.getInAction()).getBet() + state.getMinimumRaise();
+    }
+
+    private static int allIn() {
+        return 10000;
     }
 
     public static void showdown(JsonElement game) {
