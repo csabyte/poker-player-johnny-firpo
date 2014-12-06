@@ -1,5 +1,7 @@
 package org.leanpoker.player;
 
+import java.util.List;
+import org.leanpoker.player.gson.Card;
 import org.leanpoker.player.gson.GameState;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -10,10 +12,21 @@ public class Player {
 
     public static int betRequest(JsonElement request) {
         Gson gson = new Gson();
-        gson.fromJson(request, GameState.class);
+        GameState state = gson.fromJson(request, GameState.class);
 
-        return 200;
-        // return allIn();
+        List<Card> hand = state.getPlayers().get(state.getInAction()).getHoleCards();
+
+        // Párunk van.
+        if (hand.get(0).getRankValue() == hand.get(1).getRankValue()) {
+            return allIn();
+        }
+
+        // Azonos színű lapunk van.
+        if (hand.get(0).getSuit().equals(hand.get(1).getSuit())) {
+            return checkOrFold();
+        }
+
+        return checkOrFold();
     }
 
     private static int checkOrFold() {

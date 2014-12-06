@@ -1,5 +1,6 @@
 package org.leanpoker.player.gson;
 
+
 public class Card {
 
     private String rank;
@@ -10,6 +11,27 @@ public class Card {
         super();
         this.rank = rank;
         this.suit = suit;
+    }
+
+    public int getRankValue() {
+        if (rank.equals("A")) {
+            return 14;
+        }
+        if (rank.equals("K")) {
+            return 13;
+        }
+        if (rank.equals("Q")) {
+            return 12;
+        }
+        if (rank.equals("J")) {
+            return 11;
+        }
+
+        try {
+            return Integer.parseInt(rank);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getRank() {
