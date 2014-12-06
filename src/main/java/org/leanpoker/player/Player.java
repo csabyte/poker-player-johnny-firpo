@@ -18,14 +18,13 @@ public class Player {
         List<Card> hand = state.getPlayers().get(state.getInAction()).getHoleCards();
 
         RankingClient.getRank(hand);
-        
-        
-        // Párunk van.
+
+        // Pair
         if (hand.get(0).getRankValue() == hand.get(1).getRankValue()) {
             return allIn();
         }
 
-        // Azonos színű lapunk van.
+        // Flush
         if (hand.get(0).getSuit().equals(hand.get(1).getSuit())) {
             return checkOrFold();
         }

@@ -65,7 +65,7 @@ public class RankingClient {
         // cards.add(new Card("K", "diamonds"));
         // cards.add(new Card("6", "clubs"));
 
-        // 2 pár
+        // 2 pair
         cards.add(new Card("2", "clubs"));
         cards.add(new Card("2", "diamonds"));
         cards.add(new Card("4", "clubs"));
