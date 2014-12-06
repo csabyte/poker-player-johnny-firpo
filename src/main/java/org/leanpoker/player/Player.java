@@ -1,8 +1,8 @@
 package org.leanpoker.player;
 
 import java.util.List;
-import org.leanpoker.player.gson.Card;
-import org.leanpoker.player.gson.GameState;
+import org.leanpoker.gson.Card;
+import org.leanpoker.gson.GameState;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 

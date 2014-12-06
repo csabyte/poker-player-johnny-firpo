@@ -1,4 +1,4 @@
-package org.leanpoker.player.gson;
+package org.leanpoker.gson;
 
 
 public class Card {

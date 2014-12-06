@@ -1,4 +1,4 @@
-package org.leanpoker.player.gson;
+package org.leanpoker.gson;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
