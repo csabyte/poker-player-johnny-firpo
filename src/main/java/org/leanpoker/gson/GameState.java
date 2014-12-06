@@ -7,6 +7,7 @@ public class GameState {
 
     private List<Player> players;
 
+    @SerializedName("small_blind")
     private int smallBlind;
 
     private int orbits;
@@ -16,12 +17,15 @@ public class GameState {
     @SerializedName("community_cards")
     private List<Card> communityCards;
 
+    @SerializedName("current_buy_in")
     private int currentBuyIn;
 
     private int pot;
 
+    @SerializedName("in_action")
     private int inAction;
 
+    @SerializedName("minimum_raise")
     private int minimumRaise;
 
     public List<Player> getPlayers() {
