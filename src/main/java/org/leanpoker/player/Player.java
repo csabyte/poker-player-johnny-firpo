@@ -3,12 +3,13 @@ package org.leanpoker.player;
 import java.util.List;
 import org.leanpoker.gson.Card;
 import org.leanpoker.gson.GameState;
+import org.leanpoker.ranking.RankingClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 public class Player {
 
-    static final String VERSION = "Default Java folding player";
+    static final String VERSION = "RT";
 
     public static int betRequest(JsonElement request) {
         Gson gson = new Gson();
@@ -16,6 +17,9 @@ public class Player {
 
         List<Card> hand = state.getPlayers().get(state.getInAction()).getHoleCards();
 
+        RankingClient.getRank(hand);
+        
+        
         // Párunk van.
         if (hand.get(0).getRankValue() == hand.get(1).getRankValue()) {
             return allIn();
