@@ -10,27 +10,37 @@ import com.google.gson.JsonElement;
 
 public class Player {
 
-    static final String VERSION = "Ranking pair v1.1";
+    static final String VERSION = "Ranking pair v2.0";
 
     public static int betRequest(JsonElement request) {
         Gson gson = new Gson();
         GameState state = gson.fromJson(request, GameState.class);
 
         List<Card> hand = state.getPlayers().get(state.getInAction()).getHoleCards();
+        List<Card> community = state.getCommunityCards();
+        Ranking ranking = new Ranking(hand, community);
 
         // Hand Pair
-        if (hand.get(0).getRankValue() == hand.get(1).getRankValue()) {
-            return allIn();
-        }
-
-        List<Card> community = state.getCommunityCards();
-        List<Card> allCard = new ArrayList<>();
-        allCard.addAll(hand);
-        allCard.addAll(community);
-
-        Ranking ranking = new Ranking(allCard);
         if (ranking.getRank() == 1) {
-            return call(state);
+            // PreFlop
+            if (isPreFlop(state)) {
+                if (ranking.getRank() > 8) {
+                    return allIn();
+                } else {
+                    checkOrFold();
+                }
+            }
+            
+            // AfterFlop
+            if (ranking.getUsedFromHoleCards() == 2) {
+                return allIn();
+            }
+            if (ranking.getUsedFromHoleCards() == 1) {
+                return call(state);
+            }
+            if (ranking.getUsedFromHoleCards() == 0) {
+                return checkOrFold();
+            }
         }
 
         // Flush
@@ -55,6 +65,10 @@ public class Player {
 
     private static int allIn() {
         return 10000;
+    }
+    
+    private static boolean isPreFlop(GameState state) {
+        return state.getCommunityCards().size() == 0;
     }
 
     public static void showdown(JsonElement game) {

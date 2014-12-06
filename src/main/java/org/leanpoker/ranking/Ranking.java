@@ -1,20 +1,43 @@
 package org.leanpoker.ranking;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.leanpoker.gson.Card;
 
 public class Ranking {
 
-    private List<Card> cards;
+    private List<Card> allCards;
 
     private int rank;
 
     private int firstValue;
 
-    private List<Card> cardsUsed;
+    // private List<Card> cardsUsed;
 
-    public Ranking(List<Card> cards) {
-        this.cards = cards;
+    private List<Card> handCards;
+
+    private List<Card> communityCards;
+
+    private int usedFromHoleCards;
+
+    private List<Card>[] cardRank = new List[15];
+
+    public Ranking(List<Card> handCards, List<Card> communityCards) {
+        allCards = new ArrayList<>();
+        allCards.addAll(handCards);
+        allCards.addAll(communityCards);
+
+        this.handCards = new ArrayList<Card>();
+        this.handCards.addAll(handCards);
+
+        this.communityCards = new ArrayList<Card>();
+        this.communityCards.addAll(communityCards);
+
+        for (int i = 0; i < cardRank.length; i++) {
+            cardRank[i] = new ArrayList<Card>();
+        }
+
         processRank();
     }
 
@@ -30,20 +53,25 @@ public class Ranking {
         return firstValue;
     }
 
+    public int getUsedFromHoleCards() {
+        return usedFromHoleCards;
+    }
+
     private boolean checkPair() {
-        int[] cardRank = new int[15];
-        for (Card card : cards) {
-            cardRank[card.getRankValue()]++;
+        for (Card card : allCards) {
+            cardRank[card.getRankValue()].add(card);
         }
 
         for (int i = 14; i > 1; i--) {
-            if (cardRank[i] == 2) {
+            if (cardRank[i].size() == 2) {
                 rank = 1;
                 firstValue = i;
+
+                handCards.removeAll(cardRank[i]);
+                usedFromHoleCards = 2 - handCards.size();
                 return true;
             }
         }
-
         return false;
     }
 }
