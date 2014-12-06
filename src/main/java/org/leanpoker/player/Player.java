@@ -3,7 +3,6 @@ package org.leanpoker.player;
 import java.util.List;
 import org.leanpoker.gson.Card;
 import org.leanpoker.gson.GameState;
-import org.leanpoker.ranking.RankingClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -16,8 +15,6 @@ public class Player {
         GameState state = gson.fromJson(request, GameState.class);
 
         List<Card> hand = state.getPlayers().get(state.getInAction()).getHoleCards();
-
-        RankingClient.getRank(hand);
 
         // Pair
         if (hand.get(0).getRankValue() == hand.get(1).getRankValue()) {
