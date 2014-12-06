@@ -42,8 +42,11 @@ public class Player {
                     return allIn();
                 }
                 if (ranking.getUsedFromHoleCards() == 0) {
-                    // TODO: Magas-e a kézben lévő két lap.
-                    return call(state);
+                    if (hand.get(0).getRankValue() > 10 && hand.get(1).getRankValue() > 10) {
+                        return call(state);
+                    } else {
+                        checkOrFold();
+                    }
                 }
             }
 
