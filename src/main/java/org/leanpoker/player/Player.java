@@ -10,7 +10,7 @@ import com.google.gson.JsonElement;
 
 public class Player {
 
-    static final String VERSION = "Ranking pair v2.1";
+    static final String VERSION = "Ranking pair v3.0";
 
     public static int betRequest(JsonElement request) {
         Gson gson = new Gson();
@@ -20,27 +20,47 @@ public class Player {
         List<Card> community = state.getCommunityCards();
         Ranking ranking = new Ranking(hand, community);
 
-        // Hand Pair
-        if (ranking.getRank() == 1) {
-            // PreFlop
-            if (isPreFlop(state)) {
+        // PreFlop
+        if (isPreFlop(state)) {
+            if (ranking.getRank() == 1) {
                 if (ranking.getRank() > 8) {
                     return allIn();
                 } else {
-                    checkOrFold();
+                    call(state);
+                }
+            } else {
+                checkOrFold();
+            }
+        } else {
+            // Three of a Kind AfterFlop
+            if (ranking.getRank() == 3) {
+
+                if (ranking.getUsedFromHoleCards() == 2) {
+                    return allIn();
+                }
+                if (ranking.getUsedFromHoleCards() == 1) {
+                    return allIn();
+                }
+                if (ranking.getUsedFromHoleCards() == 0) {
+                    // TODO: Magas-e a kézben lévő két lap.
+                    return call(state);
                 }
             }
-            
-            // AfterFlop
-            if (ranking.getUsedFromHoleCards() == 2) {
-                return allIn();
+
+            // Pair AfterFlop
+            if (ranking.getRank() == 1) {
+
+                if (ranking.getUsedFromHoleCards() == 2) {
+                    return allIn();
+                }
+                if (ranking.getUsedFromHoleCards() == 1) {
+                    return call(state);
+                }
+                if (ranking.getUsedFromHoleCards() == 0) {
+                    return checkOrFold();
+                }
             }
-            if (ranking.getUsedFromHoleCards() == 1) {
-                return call(state);
-            }
-            if (ranking.getUsedFromHoleCards() == 0) {
-                return checkOrFold();
-            }
+
         }
 
         // Flush
@@ -66,7 +86,7 @@ public class Player {
     private static int allIn() {
         return 10000;
     }
-    
+
     private static boolean isPreFlop(GameState state) {
         return state.getCommunityCards().size() == 0;
     }

@@ -34,10 +34,6 @@ public class Ranking {
         this.communityCards = new ArrayList<Card>();
         this.communityCards.addAll(communityCards);
 
-        for (int i = 0; i < cardRank.length; i++) {
-            cardRank[i] = new ArrayList<Card>();
-        }
-
         processRank();
     }
 
@@ -46,7 +42,9 @@ public class Ranking {
     }
 
     public void processRank() {
-        checkPair();
+        if (!checkThreeOfKind()) {
+            checkPair();
+        }
     }
 
     public int getFirstValue() {
@@ -58,6 +56,10 @@ public class Ranking {
     }
 
     private boolean checkPair() {
+        for (int i = 0; i < cardRank.length; i++) {
+            cardRank[i] = new ArrayList<Card>();
+        }
+        
         for (Card card : allCards) {
             cardRank[card.getRankValue()].add(card);
         }
@@ -67,8 +69,34 @@ public class Ranking {
                 rank = 1;
                 firstValue = i;
 
-                handCards.removeAll(cardRank[i]);
-                usedFromHoleCards = 2 - handCards.size();
+                List<Card> tempHandCards = new ArrayList<>();
+                tempHandCards.addAll(handCards);
+                tempHandCards.removeAll(cardRank[i]);
+                usedFromHoleCards = 2 - tempHandCards.size();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkThreeOfKind() {
+        for (int i = 0; i < cardRank.length; i++) {
+            cardRank[i] = new ArrayList<Card>();
+        }
+        
+        for (Card card : allCards) {
+            cardRank[card.getRankValue()].add(card);
+        }
+
+        for (int i = 14; i > 1; i--) {
+            if (cardRank[i].size() == 3) {
+                rank = 3;
+                firstValue = i;
+
+                List<Card> tempHandCards = new ArrayList<>();
+                tempHandCards.addAll(handCards);
+                tempHandCards.removeAll(cardRank[i]);
+                usedFromHoleCards = 2 - tempHandCards.size();
                 return true;
             }
         }

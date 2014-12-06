@@ -71,4 +71,21 @@ public class RankingTest {
         assertEquals(0, ranking.getUsedFromHoleCards());
     }
 
+    @Test
+    public void threeOfKindTwoFromHand() {
+        List<Card> hand = new ArrayList<>();
+        hand.add(new Card("4", "diamonds"));
+        hand.add(new Card("4", "clubs"));
+
+        List<Card> community = new ArrayList<>();
+        community.add(new Card("4", "hearts"));
+        community.add(new Card("A", "clubs"));
+        community.add(new Card("9", "clubs"));
+
+        Ranking ranking = new Ranking(hand, community);
+
+        assertEquals(3, ranking.getRank());
+        assertEquals(4, ranking.getFirstValue());
+        assertEquals(2, ranking.getUsedFromHoleCards());
+    }
 }
