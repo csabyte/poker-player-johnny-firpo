@@ -1,8 +1,10 @@
 package org.leanpoker.player;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.leanpoker.gson.Card;
 import org.leanpoker.gson.GameState;
+import org.leanpoker.ranking.Ranking;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -15,16 +17,21 @@ public class Player {
         GameState state = gson.fromJson(request, GameState.class);
 
         List<Card> hand = state.getPlayers().get(state.getInAction()).getHoleCards();
-//        Ranking ranking = new Ranking(cards);
 
         // Hand Pair
         if (hand.get(0).getRankValue() == hand.get(1).getRankValue()) {
             return allIn();
         }
-        
-//        if (ranking.getRank() == 1) {
-//            return call(state);
-//        }
+
+        List<Card> community = state.getCommunityCards();
+        List<Card> allCard = new ArrayList<>();
+        allCard.addAll(hand);
+        allCard.addAll(community);
+
+        Ranking ranking = new Ranking(allCard);
+        if (ranking.getRank() == 1) {
+            return call(state);
+        }
 
         // Flush
         if (hand.get(0).getSuit().equals(hand.get(1).getSuit())) {
