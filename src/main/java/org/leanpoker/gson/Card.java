@@ -1,7 +1,6 @@
 package org.leanpoker.gson;
 
-
-public class Card {
+public class Card implements Comparable {
 
     private String rank;
 
@@ -48,6 +47,20 @@ public class Card {
 
     public void setSuit(String suit) {
         this.suit = suit;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        int otherRank = ((Card) o).getRankValue();
+        
+        if (getRankValue() < otherRank) {
+            return -1;
+        }
+        
+        if (getRankValue() > otherRank) {
+            return 1;
+        }
+        return 0;
     }
 
 }
