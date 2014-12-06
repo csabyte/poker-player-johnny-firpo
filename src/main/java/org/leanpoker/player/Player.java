@@ -12,7 +12,8 @@ public class Player {
         Gson gson = new Gson();
         gson.fromJson(request, GameState.class);
 
-        return allIn();
+        return 200;
+        // return allIn();
     }
 
     private static int checkOrFold() {
