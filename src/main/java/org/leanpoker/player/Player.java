@@ -10,7 +10,7 @@ import com.google.gson.JsonElement;
 
 public class Player {
 
-    static final String VERSION = "Ranking pair v2.0";
+    static final String VERSION = "Ranking pair v2.1";
 
     public static int betRequest(JsonElement request) {
         Gson gson = new Gson();
